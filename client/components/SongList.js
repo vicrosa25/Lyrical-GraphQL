@@ -1,5 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
+import { gql, useQuery } from "@apollo/client";
 
-export const SongList = () => {
-  const [songs, setSongs] = useState([]);
+const GET_SONGS = gql`
+  {
+    songs {
+      title
+    }
+  }
+`;
+
+const SongList = () => {
+  const { loading, data } = useQuery(GET_SONGS);
+
+  if (loading) return "Loading...";
+  return (
+    <>
+      <h1>Song List</h1>
+      {data.songs.map((song, id) => (
+        <li key={id}>{song.title}</li>
+      ))}
+    </>
+  );
 };
+
+export default SongList;

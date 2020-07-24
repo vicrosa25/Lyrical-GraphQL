@@ -2,16 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
+import SongList from "./components/SongList";
+
 const client = new ApolloClient({
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  connectToDevTools: true
 });
 
 const Root = () => {
-  return (
-    <ApolloProvider client={client}>
-      <div>Lyrical</div>
-    </ApolloProvider>
-  );
+  return <SongList />;
 };
 
-ReactDOM.render(<Root />, document.querySelector("#root"));
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <Root />
+  </ApolloProvider>,
+  document.querySelector("#root")
+);
