@@ -1,10 +1,12 @@
 const express = require("express");
-const models = require("./models");
 const { graphqlHTTP } = require("express-graphql");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+
 const schema = require("./schema/schema");
 
+// Express
 const app = express();
 
 // Replace with your mongoLab URI
@@ -20,9 +22,13 @@ mongoose.connect(MONGO_URI, {
   useUnifiedTopology: true
 });
 mongoose.connection
-  .once("open", () => console.log("Connected to MongoLab instance."))
-  .on("error", (error) => console.log("Error connecting to MongoLab:", error));
+  .once("open", () => console.log("Connected to Mongo Atlas"))
+  .on("error", (error) =>
+    console.log("Error connecting to Mongo Atlas:", error)
+  );
 
+// Middleware
+app.use(cors());
 app.use(bodyParser.json());
 app.use(
   "/graphql",
@@ -32,9 +38,6 @@ app.use(
   })
 );
 
-const webpackMiddleware = require("webpack-dev-middleware");
-const webpack = require("webpack");
-const webpackConfig = require("../webpack.config.js");
-app.use(webpackMiddleware(webpack(webpackConfig)));
-
-module.exports = app;
+app.listen(4000, () => {
+  console.log("Listening");
+});
